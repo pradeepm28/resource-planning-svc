@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: resource-planning-svc
+  datasource:
+    url: jdbc:mysql://localhost:3306/resource_planning_db
+    username: root
+    password: pass
