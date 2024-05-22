@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -19,8 +20,20 @@ public class Coworker {
     @Id
     @Column(name="ID")
     private long id;
+
+    @Column(name="EMP_ID")
+    private String employeeID;
+
     @Column(name="NAME")
     private String name;
+
     @Column(name="JOINING_DATE")
     private LocalDate joiningDate;
+
+    @Column(name="LEAVING_DATE")
+    private LocalDate leavingDate;
+
+    @Column(name="MODIFIED_ON")
+    private LocalDateTime modifiedOn;
+
 }
