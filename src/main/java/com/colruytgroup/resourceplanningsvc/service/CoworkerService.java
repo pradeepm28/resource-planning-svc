@@ -6,6 +6,7 @@ import com.colruytgroup.resourceplanningsvc.repository.CoworkerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,5 +39,37 @@ public class CoworkerService {
         } else {
             throw new NoSuchElementException("Coworker with ID " + id + " not present.");
         }
+    }
+
+    public void deleteCoworker(Long id) {
+        coworkerRepository.deleteById(id);
+    }
+
+    public CoworkerBO addCoworker(CoworkerBO coworkerBO) {
+        Coworker coworker = new Coworker();
+        coworker.setId(coworkerBO.getId());
+        coworker.setName(coworkerBO.getName());
+        coworker.setEmployeeID(coworkerBO.getEmployeeID());
+        coworker.setJoiningDate(coworkerBO.getJoiningDate());
+        coworker.setModifiedOn(LocalDateTime.now());
+
+        Coworker coworkerCreated = coworkerRepository.save(coworker);
+
+        CoworkerBO coworkerBOCreated = new CoworkerBO(coworkerCreated.getId(), coworkerCreated.getEmployeeID(), coworkerCreated.getName(), coworkerCreated.getJoiningDate());
+        return coworkerBOCreated;
+    }
+
+    public CoworkerBO updateCoworker(CoworkerBO coworkerBO) {
+        Coworker coworker = new Coworker();
+        coworker.setId(coworkerBO.getId());
+        coworker.setName(coworkerBO.getName());
+        coworker.setEmployeeID(coworkerBO.getEmployeeID());
+        coworker.setJoiningDate(coworkerBO.getJoiningDate());
+        coworker.setModifiedOn(LocalDateTime.now());
+
+        Coworker coworkerCreated = coworkerRepository.save(coworker);
+
+        CoworkerBO coworkerBOCreated = new CoworkerBO(coworkerCreated.getId(), coworkerCreated.getEmployeeID(), coworkerCreated.getName(), coworkerCreated.getJoiningDate());
+        return coworkerBOCreated;
     }
 }
