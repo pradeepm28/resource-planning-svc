@@ -3,6 +3,9 @@ package com.colruytgroup.resourceplanningsvc.controller;
 import com.colruytgroup.resourceplanningsvc.bo.CoworkerBO;
 import com.colruytgroup.resourceplanningsvc.service.CoworkerService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,30 +17,33 @@ public class CoworkerController {
     private CoworkerService coworkerService;
 
     @GetMapping
-    public List<CoworkerBO> getCoworkers() {
+    public ResponseEntity<List<CoworkerBO>> getCoworkers() {
         //return Collections.singletonList(new Coworker(1,"Abc", LocalDate.of(2024,01,01)));
-        return coworkerService.getCoworkers();
+        //return ResponseEntity.ok(coworkerService.getCoworkers());
+        return new ResponseEntity<>(coworkerService.getCoworkers(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public CoworkerBO getCoworkerById(@PathVariable(value = "id") Long id) {
-        return coworkerService.getCoworkerById(id);
+    public ResponseEntity<CoworkerBO> getCoworkerById(@PathVariable(value = "id") Long id) {
+        //return ResponseEntity.ok(coworkerService.getCoworkerById(id));
+        return new ResponseEntity<>(coworkerService.getCoworkerById(id), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteCoworker(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<String> deleteCoworker(@PathVariable(value = "id") Long id) {
         coworkerService.deleteCoworker(id);
+        return new ResponseEntity<>("Coworker with Id " + id + "is deleted successfully", HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public CoworkerBO addCoworker(@RequestBody CoworkerBO coworkerBO) {
+    public ResponseEntity<CoworkerBO> addCoworker(@RequestBody CoworkerBO coworkerBO) {
         CoworkerBO coworker = coworkerService.addCoworker(coworkerBO);
-        return coworker;
+        return new ResponseEntity<>(coworker, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public CoworkerBO updateCoworker(@PathVariable(value = "id") Long id, @RequestBody CoworkerBO coworkerBO) {
+    public ResponseEntity<CoworkerBO> updateCoworker(@PathVariable(value = "id") Long id, @RequestBody CoworkerBO coworkerBO) {
         CoworkerBO coworker = coworkerService.updateCoworker(coworkerBO);
-        return coworker;
+        return new ResponseEntity<>(coworker, HttpStatus.OK);
     }
 }
