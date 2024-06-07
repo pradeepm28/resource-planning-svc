@@ -2,7 +2,12 @@ package com.colruytgroup.resourceplanningsvc.service;
 
 import com.colruytgroup.resourceplanningsvc.bo.CoworkerBO;
 import com.colruytgroup.resourceplanningsvc.entity.Coworker;
+import com.colruytgroup.resourceplanningsvc.entity.CoworkerSkills;
+import com.colruytgroup.resourceplanningsvc.entity.CoworkerSkillsPK;
+import com.colruytgroup.resourceplanningsvc.entity.Skill;
 import com.colruytgroup.resourceplanningsvc.repository.CoworkerRepository;
+import com.colruytgroup.resourceplanningsvc.repository.CoworkerSkillsRepository;
+import com.colruytgroup.resourceplanningsvc.repository.SkillRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CoworkerService {
     private CoworkerRepository coworkerRepository;
+    private CoworkerSkillsRepository coworkerSkillsRepository;
+    private SkillRepository skillRepository;
 
     public List<CoworkerBO> getCoworkers() {
         List<Coworker> coworkerList = coworkerRepository.findAll();
@@ -23,7 +30,8 @@ public class CoworkerService {
 
         for (Coworker coworker : coworkerList) {
             if (coworker.getLeavingDate() == null) {
-                CoworkerBO coworkerBO = new CoworkerBO(coworker.getId(), coworker.getEmployeeID(), coworker.getName(), coworker.getJoiningDate());
+                List<String> skills = getCoworkerSkills(coworker.getId());
+                CoworkerBO coworkerBO = new CoworkerBO(coworker.getId(), coworker.getEmployeeID(), coworker.getName(), coworker.getJoiningDate(), skills);
                 coworkerBOList.add(coworkerBO);
             }
         }
@@ -34,7 +42,8 @@ public class CoworkerService {
         Optional<Coworker> coworker = coworkerRepository.findById(id);
         if (coworker.isPresent()) {
             Coworker coworkerData = coworker.get();
-            CoworkerBO coworkerBO = new CoworkerBO(coworkerData.getId(), coworkerData.getEmployeeID(), coworkerData.getName(), coworkerData.getJoiningDate());
+            List<String> skills = getCoworkerSkills(coworkerData.getId());
+            CoworkerBO coworkerBO = new CoworkerBO(coworkerData.getId(), coworkerData.getEmployeeID(), coworkerData.getName(), coworkerData.getJoiningDate(), skills);
             return coworkerBO;
         } else {
             throw new NoSuchElementException("Coworker with ID " + id + " not present.");
@@ -55,7 +64,7 @@ public class CoworkerService {
 
         Coworker coworkerCreated = coworkerRepository.save(coworker);
 
-        CoworkerBO coworkerBOCreated = new CoworkerBO(coworkerCreated.getId(), coworkerCreated.getEmployeeID(), coworkerCreated.getName(), coworkerCreated.getJoiningDate());
+        CoworkerBO coworkerBOCreated = new CoworkerBO(coworkerCreated.getId(), coworkerCreated.getEmployeeID(), coworkerCreated.getName(), coworkerCreated.getJoiningDate(), List.of());
         return coworkerBOCreated;
     }
 
@@ -69,7 +78,17 @@ public class CoworkerService {
 
         Coworker coworkerCreated = coworkerRepository.save(coworker);
 
-        CoworkerBO coworkerBOCreated = new CoworkerBO(coworkerCreated.getId(), coworkerCreated.getEmployeeID(), coworkerCreated.getName(), coworkerCreated.getJoiningDate());
+        CoworkerBO coworkerBOCreated = new CoworkerBO(coworkerCreated.getId(), coworkerCreated.getEmployeeID(), coworkerCreated.getName(), coworkerCreated.getJoiningDate(), List.of());
         return coworkerBOCreated;
+    }
+
+    private List<String> getCoworkerSkills(long id) {
+        List<String> skills = new ArrayList<>();
+        List<CoworkerSkills> coworkerSkills = coworkerSkillsRepository.findCoworkerSkillsByIdCoworkerId(id);
+        coworkerSkills.forEach((coworkerSkill -> {
+            Optional<Skill> skill = skillRepository.findById(coworkerSkill.getId().getSkillId());
+            skill.ifPresent(value -> skills.add(value.getName()));
+        }));
+        return skills;
     }
 }
