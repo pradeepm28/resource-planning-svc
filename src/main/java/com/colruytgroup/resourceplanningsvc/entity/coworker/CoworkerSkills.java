@@ -1,4 +1,4 @@
-package com.colruytgroup.resourceplanningsvc.entity;
+package com.colruytgroup.resourceplanningsvc.entity.coworker;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

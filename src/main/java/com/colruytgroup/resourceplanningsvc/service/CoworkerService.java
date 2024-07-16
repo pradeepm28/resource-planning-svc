@@ -1,12 +1,11 @@
 package com.colruytgroup.resourceplanningsvc.service;
 
 import com.colruytgroup.resourceplanningsvc.bo.CoworkerBO;
-import com.colruytgroup.resourceplanningsvc.entity.Coworker;
-import com.colruytgroup.resourceplanningsvc.entity.CoworkerSkills;
-import com.colruytgroup.resourceplanningsvc.entity.CoworkerSkillsPK;
+import com.colruytgroup.resourceplanningsvc.entity.coworker.Coworker;
+import com.colruytgroup.resourceplanningsvc.entity.coworker.CoworkerSkills;
 import com.colruytgroup.resourceplanningsvc.entity.Skill;
-import com.colruytgroup.resourceplanningsvc.repository.CoworkerRepository;
-import com.colruytgroup.resourceplanningsvc.repository.CoworkerSkillsRepository;
+import com.colruytgroup.resourceplanningsvc.repository.coworker.CoworkerRepository;
+import com.colruytgroup.resourceplanningsvc.repository.coworker.CoworkerSkillsRepository;
 import com.colruytgroup.resourceplanningsvc.repository.SkillRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,6 +46,17 @@ public class CoworkerService {
             return coworkerBO;
         } else {
             throw new NoSuchElementException("Coworker with ID " + id + " not present.");
+        }
+    }
+
+    public CoworkerBO getCoworkerByEmployeeCode(String employeeCode) {
+        Coworker coworker = coworkerRepository.findCoworkerByEmployeeID(employeeCode);
+        if (coworker instanceof Coworker) {
+            List<String> skills = getCoworkerSkills(coworker.getId());
+            CoworkerBO coworkerBO = new CoworkerBO(coworker.getId(), coworker.getEmployeeID(), coworker.getName(), coworker.getJoiningDate(), skills);
+            return coworkerBO;
+        } else {
+            throw new NoSuchElementException("Coworker with code " + employeeCode + " not present.");
         }
     }
 

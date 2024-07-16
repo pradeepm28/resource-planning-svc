@@ -29,6 +29,12 @@ public class CoworkerController {
         return new ResponseEntity<>(coworkerService.getCoworkerById(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/emp/{employeeCode}")
+    public ResponseEntity<CoworkerBO> getCoworkerByEmployeeCode(@PathVariable(value = "employeeCode") String employeeCode) {
+        //return ResponseEntity.ok(coworkerService.getCoworkerById(id));
+        return new ResponseEntity<>(coworkerService.getCoworkerByEmployeeCode(employeeCode), HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteCoworker(@PathVariable(value = "id") Long id) {
         coworkerService.deleteCoworker(id);
