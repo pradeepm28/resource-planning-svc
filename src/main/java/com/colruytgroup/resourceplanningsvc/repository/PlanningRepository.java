@@ -11,5 +11,6 @@ import java.util.List;
 public interface PlanningRepository extends JpaRepository<Planning, PlanningPK> {
     List<Planning> findPlanningsById_ProjectId(Long projectId);
     List<Planning> findPlanningsById_CoworkerId(Long projectId);
+    void deletePlanningById(PlanningPK planningPK);
 
 }

@@ -6,6 +6,7 @@ import com.colruytgroup.resourceplanningsvc.entity.PlanningPK;
 import com.colruytgroup.resourceplanningsvc.repository.PlanningRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -94,5 +95,17 @@ public class PlanningService {
                 .build();
         planningRepository.save(planning);
 
+    }
+
+    @Transactional
+    public void deletePlaning(String projectCode, String employeeId) {
+        ProjectBO project = projectService.getProjectByCode(projectCode);
+        CoworkerBO coworker = coworkerService.getCoworkerByEmployeeCode(employeeId);
+        PlanningPK planningPK = new PlanningPK();
+
+        planningPK.setProjectId(project.getId());
+        planningPK.setCoworkerId(coworker.getId());
+
+        planningRepository.deletePlanningById(planningPK);
     }
 }

@@ -1,4 +1,4 @@
-package com.colruytgroup.resourceplanningsvc.controller;
+package com.colruytgroup.resourceplanningsvc.api.controller.impl;
 
 import com.colruytgroup.resourceplanningsvc.bo.CoworkerBO;
 import com.colruytgroup.resourceplanningsvc.bo.ProjectBO;

@@ -1,4 +1,4 @@
-package com.colruytgroup.resourceplanningsvc.exception;
+package com.colruytgroup.resourceplanningsvc.api.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

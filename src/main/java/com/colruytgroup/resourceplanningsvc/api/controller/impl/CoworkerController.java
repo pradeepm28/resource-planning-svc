@@ -1,5 +1,6 @@
-package com.colruytgroup.resourceplanningsvc.controller;
+package com.colruytgroup.resourceplanningsvc.api.controller.impl;
 
+import com.colruytgroup.resourceplanningsvc.api.controller.CoworkerApiDefinition;
 import com.colruytgroup.resourceplanningsvc.bo.CoworkerBO;
 import com.colruytgroup.resourceplanningsvc.service.CoworkerService;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "coworkers")
 @AllArgsConstructor
-public class CoworkerController {
+public class CoworkerController implements CoworkerApiDefinition {
     private CoworkerService coworkerService;
 
     @GetMapping
