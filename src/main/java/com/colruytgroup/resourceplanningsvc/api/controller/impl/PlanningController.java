@@ -16,31 +16,36 @@ public class PlanningController {
     private PlanningService planningService;
 
     @GetMapping(value = "/project/{projectCode}")
-    public ResponseEntity<ProjectPlanningBO> getPlanningByProjectCode(@PathVariable(value = "projectCode") String projectCode) {
-        return ResponseEntity.status(HttpStatus.OK).body(planningService.getPlanningByProjectCode(projectCode));
+    @ResponseStatus(value = HttpStatus.OK)
+    public ProjectPlanningBO getPlanningByProjectCode(@PathVariable(value = "projectCode") String projectCode) {
+        return planningService.getPlanningByProjectCode(projectCode);
     }
 
     @GetMapping(value = "/employee/{employeeCode}")
-    public ResponseEntity<EmployeePlanningBO> getPlanningByemployeeCode(@PathVariable(value = "employeeCode") String employeeCode) {
-        return ResponseEntity.status(HttpStatus.OK).body(planningService.getPlanningByemployeeCode(employeeCode));
+    @ResponseStatus(value = HttpStatus.OK)
+    public EmployeePlanningBO getPlanningByemployeeCode(@PathVariable(value = "employeeCode") String employeeCode) {
+        return planningService.getPlanningByemployeeCode(employeeCode);
     }
 
     @PostMapping
-    public ResponseEntity<String> createPlanning(@RequestBody PlanningBO planningBO) {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public String createPlanning(@RequestBody PlanningBO planningBO) {
         planningService.createPlanning(planningBO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Planning is created successfully");
+        return "Planning is created successfully";
     }
 
-    @PutMapping
-    public ResponseEntity<String> updatePlanning(@RequestBody PlanningBO planningBO) {
-        planningService.createPlanning(planningBO);
-        return ResponseEntity.status(HttpStatus.OK).body("Planning updated successfully");
+    @PutMapping(value = "/project/{projectCode}/employee/{employeeId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public String updatePlanning(@PathVariable(value = "projectCode") String projectCode, @PathVariable(value = "employeeId") String employeeId, @RequestBody PlanningBO planningBO) {
+        planningService.updatePlanning(projectCode, employeeId, planningBO);
+        return "Planning updated successfully";
     }
 
     @DeleteMapping(value = "/project/{projectCode}/employee/{employeeId}")
-    public ResponseEntity<String> deletePlanning(@PathVariable(value = "projectCode") String projectCode,@PathVariable(value = "employeeId") String employeeId) {
-        planningService.deletePlaning(projectCode,employeeId);
-        return new ResponseEntity<>("Employee with code " + employeeId + "is deleted successfully from the project" + projectCode, HttpStatus.NO_CONTENT);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deletePlanning(@PathVariable(value = "projectCode") String projectCode, @PathVariable(value = "employeeId") String employeeId) {
+        planningService.deletePlaning(projectCode, employeeId);
+
     }
 
 }

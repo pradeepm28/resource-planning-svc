@@ -97,6 +97,23 @@ public class PlanningService {
 
     }
 
+    public void updatePlanning(String projectCode, String employeeId, PlanningBO planningBO) {
+        ProjectBO project = projectService.getProjectByCode(projectCode);
+        CoworkerBO coworker = coworkerService.getCoworkerByEmployeeCode(employeeId);
+        PlanningPK planningPK = new PlanningPK();
+        planningPK.setProjectId(project.getId());
+        planningPK.setCoworkerId(coworker.getId());
+
+        Planning planning = Planning.builder()
+                .id(planningPK)
+                .startDate(LocalDateTime.of(planningBO.getStartDate(), LocalTime.now()))
+                .endDate(Objects.nonNull(planningBO.getEndDate()) ? LocalDateTime.of(planningBO.getEndDate(), LocalTime.now()) : null)
+                .allocation(planningBO.getAllocation())
+                .build();
+        planningRepository.save(planning);
+
+    }
+
     @Transactional
     public void deletePlaning(String projectCode, String employeeId) {
         ProjectBO project = projectService.getProjectByCode(projectCode);

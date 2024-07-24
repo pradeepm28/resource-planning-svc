@@ -14,6 +14,8 @@ import java.util.List;
 
 @Tag(name = "Coworker Operations")
 public interface CoworkerApiDefinition {
+    @Operation(description = "Get All Coworkers")
+    @ApiResponse(responseCode = "200",description = "All coworkers details are fetched!!")
     ResponseEntity<List<CoworkerBO>> getCoworkers();
 
     @Operation(description = "Get Coworker details by Technical Id")
